@@ -20,7 +20,7 @@ La serre maintient en autonomie de bonnes conditions de vie pour les jeunes plan
 - Pilotage Arduino ou equivalent
 - Un grand socle bas et opaque pour y poser les godets
 - Un sommet transparent
-- Système d'arrosage par pompe ou passif (http://lalliepat.over-blog.com/les-trucs-de-lalliepat-arrosez-vos-plantes-%C3%A0-l-eau-de-mer)[http://lalliepat.over-blog.com/les-trucs-de-lalliepat-arrosez-vos-plantes-%C3%A0-l-eau-de-mer]
+- Système d'arrosage par pompe ou (passif)[http://lalliepat.over-blog.com/les-trucs-de-lalliepat-arrosez-vos-plantes-%C3%A0-l-eau-de-mer]
 - Régulation thermique par volets ou ventilateurs
 ## Questions ouvertes
 - Quelles sont les bonnes conditions de vies pour de jeunes plants (tomates par exemple) ?
