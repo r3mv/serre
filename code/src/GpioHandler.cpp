@@ -1,8 +1,10 @@
+#include <chrono>
 #include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <syslog.h>
 #include <stdexcept>
+#include <thread>
 #include "GpioHandler.hpp"
 
 namespace serre
@@ -57,8 +59,15 @@ namespace serre
   void
   GpioHandler::exportPin(int id) {
     std::ofstream outfile(GPIO_EXPORT_PATH);
-    outfile << id << std::endl;
-    outfile.close();
+    if (outfile.good()) {
+      outfile << id << std::endl;
+      outfile.close();
+      // let time to the system to handle the call
+      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    } else {
+      syslog(LOG_ERR, "Could not export pin %d", id);
+      throw std::runtime_error("Could not export pin");
+    }
   }
 
   void
@@ -66,8 +75,13 @@ namespace serre
   {
     sprintf(&m_buffer[0], GPIO_DIRECTION_PATH, id);
     std::ofstream outfile(&m_buffer[0]);
-    outfile << isOutput ? "out" : "in";
-    outfile.close();
+    if (outfile.good()) {
+      outfile << isOutput ? "out" : "in";
+      outfile.close();
+    } else {
+      syslog(LOG_ERR, "Could not set direction for GPIO %d", id);
+      throw std::runtime_error("Could not set GPIO direction");
+    }
   }
 
   void
@@ -96,5 +110,4 @@ namespace serre
       throw std::runtime_error("Cannot read GPIO direction");
     }
   }
-  
 }
