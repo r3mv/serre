@@ -1,0 +1,3 @@
+INCLUDE_DIRECTORIES("../src")
+ADD_EXECUTABLE(gpio_test gpio_test.cpp)
+TARGET_LINK_LIBRARIES(gpio_test ${GPIO_LIBRARY_NAME})
