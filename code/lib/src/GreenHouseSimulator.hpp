@@ -1,6 +1,7 @@
-#ifndef SENSORS_SIMULATOR_HPP
-#define SENSORS_SIMULATOR_HPP
+#ifndef GREEN_HOUSE_SIMULATOR_HPP
+#define GREEN_HOUSE_SIMULATOR_HPP
 
+#include <iostream>
 #include <map>
 #include <mutex>
 #include <string>
@@ -15,10 +16,10 @@
 #include "TAPActuator.hpp"
 
 /**
- * This class simulates sensors capbility. It reads periodically in a file the sensor values that have to be
- * returned.
+ * This class simulates the greenhouse. It reads periodically in a file the sensor values that have to be
+ * returned and provide fake implem of the actuators
  */
-class SensorsSimulator : public HumiditySensor, PumpSensor, TemperatureSensor,  WaterLevelSensor, PumpActuator, TAPActuator
+class GreenHouseSimulator : public HumiditySensor, PumpSensor, TemperatureSensor,  WaterLevelSensor, PumpActuator, TAPActuator
 {
 public:
 
@@ -30,8 +31,8 @@ public:
   
 public:
 
-  SensorsSimulator(const std::string &inputFile, int refreshPeriod_ms = 1000);
-  ~SensorsSimulator();
+  GreenHouseSimulator(const std::string &inputFile, int refreshPeriod_ms = 1000);
+  ~GreenHouseSimulator();
 
 
   double
@@ -56,7 +57,9 @@ public:
   activatePump(bool activated);
 
   void
-  TAP() {}
+  TAP() {
+    std::cout << "[GreenHouseSimulator] Picture taken" << std::endl;
+  }
 
   void
   setValues(double humidityLevel, bool pumpActivated, double temp, double waterLevel);

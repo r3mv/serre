@@ -1,15 +1,15 @@
-#include "SensorsSimulator.hpp"
+#include "GreenHouseSimulator.hpp"
 #include <chrono>
 #include <fstream>
 #include <sstream>
 
-const std::string SensorsSimulator::HUMIDITY_KEY = "humidity";
-const std::string SensorsSimulator::PUMP_KEY = "pumpActivated";
-const std::string SensorsSimulator::TEMPERATURE_KEY = "temperature";
-const std::string SensorsSimulator::WATER_LEVEL_KEY = "waterLevel";
+const std::string GreenHouseSimulator::HUMIDITY_KEY = "humidity";
+const std::string GreenHouseSimulator::PUMP_KEY = "pumpActivated";
+const std::string GreenHouseSimulator::TEMPERATURE_KEY = "temperature";
+const std::string GreenHouseSimulator::WATER_LEVEL_KEY = "waterLevel";
 
 
-SensorsSimulator::SensorsSimulator(const std::string &input, int refresh)
+GreenHouseSimulator::GreenHouseSimulator(const std::string &input, int refresh)
   : m_inputFile(input),
     m_map(),
     m_mutex(),
@@ -26,7 +26,7 @@ SensorsSimulator::SensorsSimulator(const std::string &input, int refresh)
     });
 }
 
-SensorsSimulator::~SensorsSimulator()
+GreenHouseSimulator::~GreenHouseSimulator()
 {
   m_running = false;
   if (m_thread.joinable()) {
@@ -35,14 +35,14 @@ SensorsSimulator::~SensorsSimulator()
 }
 
 double
-SensorsSimulator::getHumidity_percent()
+GreenHouseSimulator::getHumidity_percent()
 {
   std::lock_guard<std::mutex> lock(m_mutex);
   return std::stod(m_map.at(HUMIDITY_KEY));
 }
 
 bool
-SensorsSimulator::getPumpActivated()
+GreenHouseSimulator::getPumpActivated()
 {
   std::lock_guard<std::mutex> lock(m_mutex);
   bool b;
@@ -51,43 +51,43 @@ SensorsSimulator::getPumpActivated()
 }
 
 double
-SensorsSimulator::getTemperature_celsius()
+GreenHouseSimulator::getTemperature_celsius()
 {
   std::lock_guard<std::mutex> lock(m_mutex);
   return std::stod(m_map.at(TEMPERATURE_KEY));
 }
 
 double
-SensorsSimulator::getWaterLevel_percent()
+GreenHouseSimulator::getWaterLevel_percent()
 {
   std::lock_guard<std::mutex> lock(m_mutex);
   return std::stod(m_map.at(WATER_LEVEL_KEY));
 }
 
 bool
-SensorsSimulator::getHasWater() {
+GreenHouseSimulator::getHasWater() {
   return getWaterLevel_percent() > 10;
 }
 
-void SensorsSimulator::activatePump(bool activated)
+void GreenHouseSimulator::activatePump(bool activated)
 {
   setValues(getHumidity_percent(), activated, getTemperature_celsius(), getWaterLevel_percent());
 }
 
 void
-SensorsSimulator::setValues(double h, bool p, double t, double wl) {
+GreenHouseSimulator::setValues(double h, bool p, double t, double wl) {
   std::ofstream outfile(m_inputFile.c_str());
   if (outfile.good()) {
-    outfile << SensorsSimulator::HUMIDITY_KEY << "=" << h << std::endl
-	    << SensorsSimulator::PUMP_KEY << "=" << std::boolalpha << p << std::endl
-	    << SensorsSimulator::TEMPERATURE_KEY << "=" << t << std::endl
-	    << SensorsSimulator::WATER_LEVEL_KEY << "=" << wl << std::endl;
+    outfile << GreenHouseSimulator::HUMIDITY_KEY << "=" << h << std::endl
+	    << GreenHouseSimulator::PUMP_KEY << "=" << std::boolalpha << p << std::endl
+	    << GreenHouseSimulator::TEMPERATURE_KEY << "=" << t << std::endl
+	    << GreenHouseSimulator::WATER_LEVEL_KEY << "=" << wl << std::endl;
     outfile.close();
   }
 }
 
 void
-SensorsSimulator::updateValues()
+GreenHouseSimulator::updateValues()
 {
   std::lock_guard<std::mutex> lock(m_mutex);
   std::ifstream infile(m_inputFile);

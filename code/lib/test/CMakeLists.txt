@@ -1,4 +1,5 @@
 INCLUDE_DIRECTORIES(../src)
 
-ADD_EXECUTABLE(TestSensorsSimulator TestSensorsSimulator.cpp)
-TARGET_LINK_LIBRARIES(TestSensorsSimulator ${GTEST_LIBRARIES} Threads::Threads ${GREENHOUSE_SENSORS_LIB_NAME})
+ADD_EXECUTABLE(TestGreenHouseSimulator TestGreenHouseSimulator.cpp)
+TARGET_LINK_LIBRARIES(TestGreenHouseSimulator ${GTEST_LIBRARIES} Threads::Threads ${GREENHOUSE_LIBRARY_NAME})
+ADD_TEST(TestGreenHouseSimulator TestGreenHouseSimulator)
