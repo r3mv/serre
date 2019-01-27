@@ -1,6 +1,8 @@
 SET(GREENHOUSE_SENSORS_SRCS
   GpioHandler.cpp
-  SensorsSimulator.cpp)
+  SensorsSimulator.cpp
+  GreenHouseSensors.cpp
+  )
 
 ADD_LIBRARY(${GREENHOUSE_SENSORS_LIB_NAME} ${GREENHOUSE_SENSORS_SRCS})
 
