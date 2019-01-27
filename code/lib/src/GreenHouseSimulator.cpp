@@ -18,6 +18,9 @@ GreenHouseSimulator::GreenHouseSimulator(const std::string &input, int refresh)
     m_running(true)
 {
 
+  // set default values
+  setValues(50,false,20,50);
+  
   m_thread = std::thread([this] {
       while (m_running) {
 	updateValues();

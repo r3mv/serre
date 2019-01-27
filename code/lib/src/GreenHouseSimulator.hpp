@@ -19,7 +19,12 @@
  * This class simulates the greenhouse. It reads periodically in a file the sensor values that have to be
  * returned and provide fake implem of the actuators
  */
-class GreenHouseSimulator : public HumiditySensor, PumpSensor, TemperatureSensor,  WaterLevelSensor, PumpActuator, TAPActuator
+class GreenHouseSimulator : public HumiditySensor,
+			    public PumpSensor,
+			    public TemperatureSensor,
+			    public WaterLevelSensor,
+			    public PumpActuator,
+			    public TAPActuator
 {
 public:
 

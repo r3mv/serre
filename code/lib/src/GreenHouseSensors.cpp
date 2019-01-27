@@ -15,7 +15,12 @@ GreenHouseSensors::GreenHouseSensors(HumiditySensor &hs,
   m_thread(),
   m_refreshPeriod_ms(refreshPeriod_ms)
 {
-  
+  m_thread = std::thread([this] {
+      while (m_running) {
+	querySensors();
+	std::this_thread::sleep_for(std::chrono::milliseconds(m_refreshPeriod_ms));
+      }
+    });
 }
 
 GreenHouseSensors::~GreenHouseSensors()
