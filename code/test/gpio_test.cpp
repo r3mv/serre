@@ -13,7 +13,7 @@ main(int argc, char** argv)
     return EXIT_FAILURE;
   }
   
-  serre::GpioHandler handler;
+  GpioHandler handler;
 
   handler.exportPin(4);
   handler.setAsOutput(4);
