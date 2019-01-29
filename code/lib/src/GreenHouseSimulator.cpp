@@ -1,7 +1,8 @@
-#include "GreenHouseSimulator.hpp"
 #include <chrono>
 #include <fstream>
 #include <sstream>
+#include "GreenHouseSimulator.hpp"
+#include "TAPFsWebcam.hpp"
 
 const std::string GreenHouseSimulator::HUMIDITY_KEY = "humidity";
 const std::string GreenHouseSimulator::PUMP_KEY = "pumpActivated";
@@ -72,10 +73,19 @@ GreenHouseSimulator::getHasWater() {
   return getWaterLevel_percent() > 10;
 }
 
-void GreenHouseSimulator::activatePump(bool activated)
+void
+GreenHouseSimulator::activatePump(bool activated)
 {
   setValues(getHumidity_percent(), activated, getTemperature_celsius(), getWaterLevel_percent());
 }
+
+void
+GreenHouseSimulator::TAP()
+{
+  TAPFsWebcam tap;
+  tap.TAP();
+}
+
 
 void
 GreenHouseSimulator::setValues(double h, bool p, double t, double wl) {
@@ -108,3 +118,5 @@ GreenHouseSimulator::updateValues()
       infile.close();
   }
 }
+
+

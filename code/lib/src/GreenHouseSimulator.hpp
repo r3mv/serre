@@ -62,10 +62,8 @@ public:
   activatePump(bool activated);
 
   void
-  TAP() {
-    std::cout << "[GreenHouseSimulator] Picture taken" << std::endl;
-  }
-
+  TAP();
+  
   void
   setValues(double humidityLevel, bool pumpActivated, double temp, double waterLevel);
   
