@@ -1,0 +1,10 @@
+[Unit]
+Description=Capture images from webcam at regular intervals
+Wants=ntp
+ConditionPathExists=/dev/video0
+After=dev-video0.device
+[Service]
+Type=simple
+ExecStart=/home/remi/Development/serre/code/scripts/capture_timelapse.sh
+[Install]
+WantedBy=multi-user.target
