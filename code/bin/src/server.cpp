@@ -29,9 +29,9 @@ main(int argc, char **argv)
   // todo: make server wait for connections
   // define or use an existing protocol to send sensor values and receive actuators commands
   int cpt = 0;
-  while (g_running && ++cpt < 20) {
+  while (g_running && ++cpt < 100) {
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    server.TAP();
+    //    server.TAP();
   }
   
 }
