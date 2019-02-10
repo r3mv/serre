@@ -50,19 +50,20 @@ GreenHouseSensors::removeListener(GreenHouseSensorsListener *listener)
 
 
 void
-GreenHouseSensors::fireNewSensorMeasure(double h, bool p, double t, double wl, bool nr)
+GreenHouseSensors::fireNewSensorMeasure(const GreenHouseSensorMeasure &data)
 {
   for (GreenHouseSensorsListener *l : m_listeners) {
-    l->newSensorMeasure(h, p, t, wl, nr);
+    l->newSensorMeasure(data);
   }
 }
 
 void
 GreenHouseSensors::querySensors() {
-  double h = m_humiditySensor.getHumidity_percent();
-  bool p = m_pumpSensor.getPumpActivated();
-  double t = m_temperatureSensor.getTemperature_celsius();
-  double wl = m_waterLevelSensor.getWaterLevel_percent();
-  bool nr = ! m_waterLevelSensor.getHasWater();
-  fireNewSensorMeasure(h, p, t, wl, nr);
+  GreenHouseSensorMeasure data;
+  data.humidity = m_humiditySensor.getHumidity_percent();
+  data.pumpActivated = m_pumpSensor.getPumpActivated();
+  data.temperature = m_temperatureSensor.getTemperature_celsius();
+  data.waterLevel = m_waterLevelSensor.getWaterLevel_percent();
+  data.needsRefill = ! m_waterLevelSensor.getHasWater();
+  fireNewSensorMeasure(data);
 }

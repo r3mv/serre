@@ -6,3 +6,7 @@ TARGET_LINK_LIBRARIES(greenhouse_server ${GREENHOUSE_LIBRARY_NAME} Threads::Thre
 
 ADD_EXECUTABLE(greenhouse_client client.cpp)
 TARGET_LINK_LIBRARIES(greenhouse_client cppzmq)
+
+
+ADD_EXECUTABLE(greenhouseweb greenhouseweb.cpp)
+TARGET_LINK_LIBRARIES(greenhouseweb ${GREENHOUSE_LIBRARY_NAME} Threads::Threads cppzmq)

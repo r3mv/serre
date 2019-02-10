@@ -38,8 +38,9 @@ private:
 
   void
   querySensors();
+
   void
-  fireNewSensorMeasure(double h, bool p, double t, double wl, bool nr);
+  fireNewSensorMeasure(const GreenHouseSensorMeasure& data);
   
 private:
 

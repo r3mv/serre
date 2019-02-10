@@ -14,20 +14,28 @@ class GreenHouseServer : GreenHouseSensorsListener
 public:
   GreenHouseServer(GreenHouseSensors &sensors, GreenHouseActuators &actuators);
   
-  ~GreenHouseServer() {}
+  ~GreenHouseServer();
 
   void
-  newSensorMeasure(double humidity, bool pumpActivated, double temperature, double waterLevel, bool needsRefill);
+  newSensorMeasure(const GreenHouseSensorMeasure &data);
 
   void
   TAP();
 
+  void
+  stop();
+  
 private:
   GreenHouseSensors &m_sensors;
   GreenHouseActuators &m_actuators;
 
+  bool m_running;
+  std::thread m_thread;
+  
+  GreenHouseSensorMeasure m_lastSensorMeasure;
+  
   zmq::context_t m_context;
-  zmq::socket_t m_publishSocket;
+  zmq::socket_t m_socket;
 };
 
 #endif
