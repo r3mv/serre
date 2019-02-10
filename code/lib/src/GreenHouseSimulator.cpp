@@ -82,6 +82,7 @@ GreenHouseSimulator::activatePump(bool activated)
 void
 GreenHouseSimulator::TAP()
 {
+  std::cout << "TAKING A PICTURE" << std::endl;
   TAPFsWebcam tap;
   tap.TAP();
 }

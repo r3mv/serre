@@ -2,6 +2,7 @@ SET(GREENHOUSE_SENSORS_SRCS
   GpioHandler.cpp
   GreenHouseActuators.cpp
   GreenHouseSensors.cpp
+  GreenHouseSensorMeasure.cpp
   GreenHouseSimulator.cpp
   TAPFsWebcam.cpp
   )

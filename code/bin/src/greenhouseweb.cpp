@@ -11,16 +11,32 @@ const std::string QUERY_STRING="QUERY_STRING";
 const std::string REQUEST_METHOD="REQUEST_METHOD";
 
 void
-json200(const char* message, std::ostream &out)
+json200header( std::ostream &out)
 {
   out << "Status: 200 OK\r" << std::endl;
   out << "Content-Type: application/json;charset: utf-8\r" << std::endl;
   out << "Pragma: no-cache\r" << std::endl;
   out << "\r" << std::endl;
-  if (message) {
-    out << message << "\r" << std::endl;
-  }
 }
+
+void
+plainTextHeader(std::ostream &out)
+{
+  out << "Status: 200 OK\r" << std::endl;
+  out << "Content-Type: application/text;charset: utf-8\r" << std::endl;
+  out << "Pragma: no-cache\r" << std::endl;
+  out << "\r" << std::endl;
+}
+
+void
+header503(std::ostream &out)
+{
+  out << "Status: 503 OK\r" << std::endl;
+  out << "Content-Type: application/text;charset: utf-8\r" << std::endl;
+  out << "Pragma: no-cache\r" << std::endl;
+  out << "\r" << std::endl;
+}
+
 
 std::vector<std::string>
 split(const std::string &input, char sep)
@@ -100,7 +116,7 @@ const std::string WATER_LEVEL = "waterLevel";
 
 
 /**
- * CGI-Bin executable to handle requests to greenhouse data and actuators
+ * CGI-Bin executable to handle requests to greenhouse data an
  * TODO: set up lighthttpd or apache2 to handle this executable
  */
 int
@@ -110,27 +126,33 @@ main(int argc, char *argv[])
   std::map<std::string, std::string> parametersMap;
   processHttpRequest(parametersMap);
 
-  std::map<std::string, std::string> results;
-
   zmq::context_t context (1);
   zmq::socket_t socket (context, ZMQ_REQ);
   std::cout << "Connecting to hello world server…" << std::endl;
   socket.connect ("tcp://localhost:6533");
-  //  Do 10 requests, waiting each time for a response
-  zmq::message_t request (5);
-  memcpy (request.data (), "Hello", 5);
-  socket.send (request);
-  zmq::message_t reply;
-  socket.recv (&reply);
-  GreenHouseSensorMeasure measure;
-  memcpy(&measure, reply.data(), sizeof(GreenHouseSensorMeasure));
-  std::cout << "Received measure "<< measure.temperature << std::endl;
 
-  // TODO: query greenhouse server using zmq
-  results[PARAMETER_TEMPERATURE]="20";
-  results[PARAMETER_HUMIDITY]="85";
-  
-  json200(NULL, std::cout);
-  serialize(results, std::cout);
+  if (parametersMap.find("sensors") != parametersMap.end()) {
+    zmq::message_t request (7);
+    memcpy (request.data (), "sensors", 7);
+    socket.send (request);
+    zmq::message_t reply;
+    socket.recv (&reply);
+    GreenHouseSensorMeasure measure;
+    memcpy(&measure, reply.data(), sizeof(GreenHouseSensorMeasure));
+    json200header(std::cout);
+    asJson(std::cout, measure);
+  } else if (parametersMap.find("tap") != parametersMap.end()) {
+    zmq::message_t request(3);
+    memcpy(request.data(), "tap", 3);
+    socket.send(request);
+    zmq::message_t reply;
+    socket.recv(&reply);
+    plainTextHeader(std::cout);
+    std::cout << "OK" << std::endl;
+  } else {
+    header503(std::cout);
+  }
+   
+
   
 }

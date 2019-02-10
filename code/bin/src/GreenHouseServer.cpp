@@ -16,10 +16,16 @@ GreenHouseServer::GreenHouseServer(GreenHouseSensors &sensors, GreenHouseActuato
       while (m_running) {
 	zmq::message_t request;
 	m_socket.recv(&request);
-	std::cout << "Request received"<< std::endl;
-	zmq::message_t reply(sizeof(GreenHouseSensorMeasure));
-	memcpy(reply.data(), &m_lastSensorMeasure, sizeof(GreenHouseSensorMeasure));
-	m_socket.send(reply);
+	if (memcmp(request.data(), "tap", 3)==0) {
+	  TAP();
+	  zmq::message_t reply(2);
+	  memcpy(reply.data(), "OK", 2);
+	  m_socket.send(reply);
+	} else if (memcmp(request.data(), "sensors", 7)==0) {
+	  zmq::message_t reply(sizeof(GreenHouseSensorMeasure));
+	  memcpy(reply.data(), &m_lastSensorMeasure, sizeof(GreenHouseSensorMeasure));
+	  m_socket.send(reply);
+	}
       }
     });
   

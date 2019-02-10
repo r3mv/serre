@@ -2,7 +2,7 @@
 #include "TAPFsWebcam.hpp"
 
 TAPFsWebcam::TAPFsWebcam()
-  : m_command("fswebcam -c /tmp/capture.config ~/\"$(date +%Y%m%d_%H%M%S).jpg\" 2> /dev/null")
+  : m_command("fswebcam -c /tmp/capture.config ~/\"$(date +%Y%m%d_%H%M%S).jpg\" ")
 {}
 
 void

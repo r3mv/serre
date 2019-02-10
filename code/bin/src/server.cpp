@@ -32,7 +32,7 @@ main(int argc, char **argv)
   int cpt = 0;
   while (g_running) {
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    server.TAP();
+    //   //    server.TAP();
   }
   
 }
